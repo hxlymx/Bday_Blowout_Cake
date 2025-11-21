@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday!</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f7f2e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    flex-direction: column;
+  }
+  .cake {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tier {
+    width: 200px;
+    height: 60px;
+    background: #7b3f00;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .tier.middle { width: 150px; height: 50px; }
+  .tier.top { width: 100px; height: 40px; }
+  .candle {
+    width: 10px;
+    height: 30px;
+    background: #fff;
+    position: absolute;
+    top: -35px;
+    border-radius: 3px;
+  }
+  .flame {
+    width: 6px;
+    height: 10px;
+    background: orange;
+    position: absolute;
+    top: -15px;
+    left: 2px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px yellow;
+    animation: flicker 0.2s infinite alternate;
+  }
+  @keyframes flicker {
+    0% { transform: scaleY(1) translateX(0); opacity:1; }
+    50% { transform: scaleY(1.2) translateX(1px); opacity:0.9; }
+    100% { transform: scaleY(0.8) translateX(-1px); opacity:0.8; }
+  }
+  .message {
+    margin-top: 20px;
+    font-size: 24px;
+    color: #b12b2b;
+    display: none;
+    text-align: center;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: red;
+    top: 0;
+    animation: fall 2s linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(300px) rotate(360deg); opacity:0; }
+  }
+</style>
+</head>
+<body>
+<div class="cake">
+  <div class="tier top">
+    <div class="candle"><div class="flame"></div></div>
+  </div>
+  <div class="tier middle">
+    <div class="candle"><div class="flame"></div></div>
+  </div>
+  <div class="tier">
+    <div class="candle"><div class="flame"></div></div>
+  </div>
+</div>
+<div class="message">Happy Birthday!</div>
+
+<script>
+  // Confetti function
+  function launchConfetti() {
+    for(let i=0;i<50;i++){
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti-piece');
+      confetti.style.left = Math.random()*window.innerWidth + 'px';
+      confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+      document.body.appendChild(confetti);
+      setTimeout(()=> confetti.remove(), 2000);
+    }
+  }
+
+  // Microphone setup
+  let blown = false;
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaStreamSource(stream);
+    source.connect(analyser);
+    analyser.fftSize = 512;
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    function checkVolume() {
+      analyser.getByteFrequencyData(dataArray);
+      let sum = 0;
+      for(let i=0;i<dataArray.length;i++){ sum += dataArray[i]; }
+      let avg = sum/dataArray.length;
+      if(avg > 60 && !blown) { // threshold for blow detection
+        blown = true;
+        document.querySelectorAll('.flame').forEach(f => f.style.display='none');
+        document.querySelector('.message').style.display='block';
+        launchConfetti();
+      }
+      requestAnimationFrame(checkVolume);
+    }
+    checkVolume();
+  }).catch(err => {
+    alert('Microphone access denied or unavailable.');
+  });
+</script>
+</body>
+</html>
