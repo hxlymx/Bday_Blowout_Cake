@@ -1,53 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AQ Birthday Cake</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Blowout Cake</title>
+    <link rel="stylesheet" href="cake.css">
 </head>
+
 <body>
+    <div class="container">
+        <h1 class="title">Happy Birthday!</h1>
 
-  <div class="container">
+        <!-- Cake Wrapper -->
+        <div class="cake">
 
-    <!-- CAKE -->
-    <div class="cake">
+            <!-- Sparkler -->
+            <div class="sparkler"></div>
 
-      <div class="drip drip1"></div>
-      <div class="drip drip2"></div>
-      <div class="drip drip3"></div>
+            <!-- A + Q CANDLES -->
+            <div class="candle-wrapper">
+                <div class="candle gold-glitter" id="candleA">
+                    <span>A</span>
+                    <div class="purple-flame"></div>
+                </div>
+                <div class="candle gold-glitter" id="candleQ">
+                    <span>Q</span>
+                    <div class="purple-flame"></div>
+                </div>
+            </div>
 
-      <!-- Candle A -->
-      <div class="candle candle-a">
-        <div class="glitter"></div>
-        <div class="flame purple-flame"></div>
-      </div>
+            <!-- TOP TIER -->
+            <div class="tier top-tier">
+                <div class="drip"></div>
+                <div class="drip small"></div>
+                <div class="drip large"></div>
+            </div>
 
-      <!-- Candle Q -->
-      <div class="candle candle-q">
-        <div class="glitter"></div>
-        <div class="flame purple-flame"></div>
-      </div>
+            <!-- MIDDLE TIER -->
+            <div class="tier mid-tier">
+                <div class="drip"></div>
+                <div class="drip medium"></div>
+                <div class="drip small"></div>
+            </div>
 
-      <!-- Sparkler -->
-      <div class="sparkler">
-        <div class="spark"></div>
-        <div class="spark"></div>
-        <div class="spark"></div>
-      </div>
+            <!-- BOTTOM TIER -->
+            <div class="tier bottom-tier">
+                <div class="drip"></div>
+                <div class="drip medium"></div>
+                <div class="drip large"></div>
+            </div>
+        </div>
 
+        <p class="instructions">Blow on your phone to blow out the candles</p>
+        <button id="startBtn">Enable Microphone</button>
+
+        <!-- Confetti -->
+        <canvas id="confetti"></canvas>
+
+        <!-- Final Message -->
+        <div id="message" class="hidden">
+            <p>Wishing you the sweetest birthday ever!</p>
+        </div>
     </div>
 
-    <button id="blowButton">Blow Out Candles</button>
-
-    <div id="message" class="hidden">
-      Happy Birthday AQ!
-    </div>
-
-    <canvas id="confettiCanvas"></canvas>
-
-  </div>
-
-  <script src="script.js"></script>
+    <script src="cake.js"></script>
 </body>
 </html>
