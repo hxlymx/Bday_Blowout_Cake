@@ -16,6 +16,8 @@
     overflow: hidden;
     flex-direction: column;
   }
+
+  /* CAKE TIERS */
   .cake {
     position: relative;
     display: flex;
@@ -23,83 +25,159 @@
     align-items: center;
   }
   .tier {
-    width: 200px;
-    height: 60px;
-    background: #7b3f00;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     position: relative;
+    margin-bottom: 10px;
   }
-  .tier.middle { width: 150px; height: 50px; }
-  .tier.top { width: 100px; height: 40px; }
-  .candle {
-    width: 10px;
-    height: 30px;
-    background: #fff;
+  .tier.bottom { width: 200px; height: 60px; background: linear-gradient(#7b3f00, #5a2c00); }
+  .tier.middle { width: 150px; height: 50px; background: linear-gradient(#7b3f00, #5a2c00); }
+  .tier.top { width: 100px; height: 40px; background: linear-gradient(#7b3f00, #5a2c00); display: flex; justify-content: center; }
+
+  /* ICING DRIPS */
+  .tier::before {
+    content: '';
     position: absolute;
-    top: -35px;
-    border-radius: 3px;
-  }
-  .flame {
-    width: 6px;
-    height: 10px;
-    background: orange;
-    position: absolute;
-    top: -15px;
-    left: 2px;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background: #fff8dc;
     border-radius: 50%;
-    box-shadow: 0 0 8px yellow;
+    box-shadow: inset 0 -5px 5px rgba(255,255,255,0.5);
+  }
+
+  /* SPRINKLES */
+  .sprinkle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: hsl(calc(360*var(--r)), 80%, 60%);
+  }
+
+  /* AQ LETTER CANDLES */
+  .letter-candle {
+    display: inline-block;
+    font-size: 36px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #f1c40f, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    margin: 0 5px;
+  }
+
+  /* PURPLE FLAME */
+  .letter-candle .flame {
+    width: 10px;
+    height: 14px;
+    background: linear-gradient(orange, purple);
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    box-shadow: 0 0 15px purple;
     animation: flicker 0.2s infinite alternate;
   }
   @keyframes flicker {
     0% { transform: scaleY(1) translateX(0); opacity:1; }
-    50% { transform: scaleY(1.2) translateX(1px); opacity:0.9; }
-    100% { transform: scaleY(0.8) translateX(-1px); opacity:0.8; }
+    50% { transform: scaleY(1.2) translateX(1px); opacity:0.8; }
+    100% { transform: scaleY(0.8) translateX(-1px); opacity:0.9; }
   }
+
+  /* MESSAGE */
   .message {
     margin-top: 20px;
-    font-size: 24px;
-    color: #b12b2b;
+    font-size: 36px;
+    color: #9b59b6;
+    font-family: 'Comic Sans MS', cursive;
     display: none;
     text-align: center;
+    animation: pop 0.5s forwards;
   }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  /* CONFETTI */
   .confetti-piece {
     position: absolute;
     width: 6px;
     height: 6px;
-    background: red;
+    border-radius: 50%;
     top: 0;
     animation: fall 2s linear forwards;
   }
   @keyframes fall {
     to { transform: translateY(300px) rotate(360deg); opacity:0; }
   }
+
+  /* SPARKLER */
+  .spark {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: yellow;
+    animation: rise 1s linear forwards;
+  }
+  @keyframes rise {
+    to { transform: translateY(-100px) rotate(360deg); opacity:0; }
+  }
+
 </style>
 </head>
 <body>
 <div class="cake">
+  <div class="tier bottom"></div>
+  <div class="tier middle"></div>
   <div class="tier top">
-    <div class="candle"><div class="flame"></div></div>
-  </div>
-  <div class="tier middle">
-    <div class="candle"><div class="flame"></div></div>
-  </div>
-  <div class="tier">
-    <div class="candle"><div class="flame"></div></div>
+    <div class="letter-candle">A<span class="flame"></span></div>
+    <div class="letter-candle">Q<span class="flame"></span></div>
   </div>
 </div>
-<div class="message">Happy Birthday!</div>
+<div class="message">Happy Birthday AQ!</div>
 
 <script>
+  // Add sprinkles randomly
+  document.querySelectorAll('.tier').forEach(tier=>{
+    for(let i=0;i<10;i++){
+      const s = document.createElement('div');
+      s.classList.add('sprinkle');
+      s.style.setProperty('--r', Math.random());
+      s.style.top = Math.random()*tier.offsetHeight + 'px';
+      s.style.left = Math.random()*tier.offsetWidth + 'px';
+      tier.appendChild(s);
+    }
+  });
+
   // Confetti function
   function launchConfetti() {
+    const colors = ['#9b59b6','#f1c40f','#e5e5f7'];
     for(let i=0;i<50;i++){
       const confetti = document.createElement('div');
       confetti.classList.add('confetti-piece');
       confetti.style.left = Math.random()*window.innerWidth + 'px';
-      confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+      confetti.style.background = colors[Math.floor(Math.random()*colors.length)];
       document.body.appendChild(confetti);
       setTimeout(()=> confetti.remove(), 2000);
+    }
+  }
+
+  // Sparkler function
+  function sparkler() {
+    for(let i=0;i<30;i++){
+      const spark = document.createElement('div');
+      spark.classList.add('spark');
+      spark.style.left = (window.innerWidth/2 - 20 + Math.random()*40) + 'px';
+      spark.style.top = '50px';
+      spark.style.background = ['#f1c40f','#ffd700','#ffffff'][Math.floor(Math.random()*3)];
+      document.body.appendChild(spark);
+      setTimeout(()=> spark.remove(), 1000);
     }
   }
 
@@ -118,11 +196,12 @@
       let sum = 0;
       for(let i=0;i<dataArray.length;i++){ sum += dataArray[i]; }
       let avg = sum/dataArray.length;
-      if(avg > 60 && !blown) { // threshold for blow detection
+      if(avg > 60 && !blown) {
         blown = true;
         document.querySelectorAll('.flame').forEach(f => f.style.display='none');
-        document.querySelector('.message').style.display='block';
+        sparkler();
         launchConfetti();
+        document.querySelector('.message').style.display='block';
       }
       requestAnimationFrame(checkVolume);
     }
