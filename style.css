@@ -1,0 +1,171 @@
+body {
+  background: #fdf7ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Georgia, serif;
+}
+
+.container {
+  text-align: center;
+}
+
+.cake {
+  width: 320px;
+  height: 200px;
+  background: #eec9a1;
+  border-radius: 20px;
+  position: relative;
+  margin: 20px auto;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  overflow: visible;
+}
+
+/* 3D CHOCOLATE DRIP */
+.drip {
+  position: absolute;
+  top: 0;
+  width: 60px;
+  height: 90px;
+  background: linear-gradient(#5a2b00, #3b1800);
+  border-radius: 30px;
+}
+.drip1 { left: 40px; }
+.drip2 { left: 140px; height: 110px; }
+.drip3 { left: 240px; height: 80px; }
+
+/* CANDLES (A & Q LETTER STYLE) */
+.candle {
+  width: 40px;
+  height: 70px;
+  background: gold;
+  background-image: radial-gradient(circle, #ffd700 30%, #b08d00 90%);
+  border-radius: 8px;
+  position: absolute;
+  top: -70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 42px;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px #000;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.candle-a::before {
+  content: "A";
+}
+.candle-q::before {
+  content: "Q";
+}
+
+.candle-a { left: 90px; }
+.candle-q { left: 180px; }
+
+/* GOLD GLITTER EFFECT */
+.glitter {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image:
+    radial-gradient(gold 10%, transparent 12%),
+    radial-gradient(#ffefb8 10%, transparent 12%);
+  background-size: 12px 12px;
+  opacity: 0.6;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { transform: translate(0,0); }
+  100% { transform: translate(10px,10px); }
+}
+
+/* PURPLE GLOWING FLAME */
+.flame {
+  width: 20px;
+  height: 30px;
+  border-radius: 50%;
+  background: purple;
+  position: absolute;
+  top: -30px;
+  filter: blur(4px);
+  animation: flicker 0.15s infinite alternate;
+}
+
+.purple-flame {
+  background: radial-gradient(circle, #d538ff 10%, #7900bd 80%);
+  box-shadow: 0 0 15px 8px #d538ff;
+}
+
+@keyframes flicker {
+  from { transform: scale(1); opacity: 0.8; }
+  to   { transform: scale(1.15); opacity: 1; }
+}
+
+/* SPARKLER */
+.sparkler {
+  position: absolute;
+  top: -100px;
+  left: 150px;
+}
+
+.spark {
+  position: absolute;
+  width: 6px;
+  height: 20px;
+  background: gold;
+  top: 0;
+  left: 0;
+  transform-origin: bottom center;
+  animation: spark 0.5s infinite ease-in-out;
+}
+
+.spark:nth-child(1) { transform: rotate(0deg); }
+.spark:nth-child(2) { transform: rotate(120deg); }
+.spark:nth-child(3) { transform: rotate(240deg); }
+
+@keyframes spark {
+  0% { opacity: 1; height: 20px; }
+  100% { opacity: 0; height: 5px; }
+}
+
+/* BUTTON */
+#blowButton {
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  background: #a46eff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#message {
+  margin-top: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  color: purple;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.hidden {
+  opacity: 0;
+}
+.visible {
+  opacity: 1;
+}
+
+/* CONFETTI CANVAS */
+#confettiCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
